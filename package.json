@@ -1,0 +1,16 @@
+{
+  "name": "hacker-news-pwa",
+  "version": "1.0.0",
+  "description": "A web app where you can read past hacker news classics offline.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kat Zhang <arcadychang@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}

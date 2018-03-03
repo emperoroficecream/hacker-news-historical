@@ -2,12 +2,17 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const path = require('path');
+const bigQuery = require('./query');
 
 app.get('/data', (req, res, next) => {
-  const mockDataFilePath = path.join(__dirname, 'mockServer/db.json');
+/*   const mockDataFilePath = path.join(__dirname, 'mockServer/db.json');
   fs.createReadStream(mockDataFilePath)
     .on('error', e => console.log(e))
-    .pipe(res);
+    .pipe(res); */
+    bigQuery()
+      .then(results => {
+        res.json(results);
+      })
 });
 
 app.use(express.static('public'));

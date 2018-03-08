@@ -1,9 +1,19 @@
+Vue.filter('formatUnixTime', (unixTime) => {
+  const time = new Date(parseInt(unixTime) * 1000);
+  const year = time.getFullYear();
+  const month = time.getMonth() + 1;
+  const date = time.getDate();
+  const hour = time.getHours();
+  const minute = ('0' + time.getMinutes()).slice(-2);
+  const second = ('0' + time.getSeconds()).slice(-2);
+  return `${year}-${month}-${date}, ${hour}:${minute}:${second}`;
+})
+
 const app = new Vue({
   el: '#app',
   data:  {
     posts: [],
     beforeYears: {
-      default: '2012',
       options: [
         '2007',
         '2008',
@@ -17,14 +27,34 @@ const app = new Vue({
         '2016',
         '2017',
         '2018'
-      ]
-    }
+      ],
+      selected: '2012'
+    },
+    points: '30'
   },
   created () {
-    fetch('http://localhost:3000/data')
+    fetch('http://localhost:3000/story')
       .then(response => response.json())
       .then(json => {
         this.posts = json;
-      })
+      });
+  },
+  methods: {
+    handleQueryPreference(e) {
+      const vm = this;
+      const qsObj = {
+        year: vm.beforeYears.selected,
+        points: vm.points
+      }
+      const qs = Object.keys(qsObj).reduce((acc, key) => {
+        acc.push(`${key}=${qsObj[key]}`);
+        return acc;
+      }, []).join('&');
+      fetch('http://localhost:3000/story?' + qs)
+        .then(response => response.json())
+        .then(json => {
+          this.posts = json;
+        });
+    }
   }
 })

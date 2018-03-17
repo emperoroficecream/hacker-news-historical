@@ -4,7 +4,7 @@
   "description": "A web app where you can read past hacker news classics offline.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "GOOGLE_APPLICATION_CREDENTIALS='./gcp-config.json' node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kat Zhang <arcadychang@gmail.com>",

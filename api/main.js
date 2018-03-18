@@ -3,17 +3,17 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 const queryAPI = require('./query');
+const curl = require('curlrequest');
+const extractor = require('unfluff');
 
-
-
-/* function extractArticle(article) {
-  fs.writeFile(`./articles/${article.id}.txt`, extracted.text, (e) => {
-    if (e) console.log(e);
-  }); 
+function extractArticle(article) {
   return new Promise((resolve, reject) => {
-    curl.get(article.url, {}, (error, response, body) => {
-      if (body) {
-        let parsed = extractor(body);
+    curl.request({
+      url: article.url,
+      timeout: 3
+    }, (error, response) => {
+      if (response) {
+        let parsed = extractor(response);
         console.log('parsed', parsed.title)
         resolve(parsed);
       } else {
@@ -21,24 +21,27 @@ const queryAPI = require('./query');
       }
     })
   }).catch(e => console.log(e));
-} */
+}
 
 app.get('/story', (req, res, next) => {
-/*   const mockDataFilePath = path.join(__dirname, 'mockServer/db.json');
-  fs.createReadStream(mockDataFilePath)
-    .on('error', e => console.log(e))
-    .pipe(res); */
-
     queryAPI(req.query)
       .then(results => {
         res.json(results);
         console.log(results instanceof Array);
-/*         const articlePromises = results.map(extractArticle);
-        return Promise.all(articlePromises); */
+        const articlePromises = results.map(extractArticle);
+        return Promise.all(articlePromises);
       })
-/*       .then(articlePromises => {
-        console.log('then,', articlePromises);
-      }) */
+      .then(articles => {
+        articles.forEach(a => {
+          if (a) {
+            console.log(a);
+/*             a = JSON.parse(a); */
+            fs.writeFileSync(`${a.title}.txt`, a.text, e => {
+              console.log(e);
+            })
+          }
+        })
+      })
       .catch(e => {
         console.log(e);
       });

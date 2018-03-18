@@ -1,5 +1,7 @@
+/api/*.txt
 /api/node_modules/
 /web/node_modules/
 /node_modules/
 gcp-config.json
 .DS_Store
+/web/public/bundle.js

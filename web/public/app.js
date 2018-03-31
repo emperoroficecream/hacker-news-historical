@@ -9,6 +9,11 @@ Vue.filter('formatUnixTime', (unixTime) => {
   return `${year}-${month}-${date}, ${hour}:${minute}:${second}`;
 })
 
+const DEFAULT_YEAR = '2012';
+const DEFAULT_POINT_THRESHOLD = '130';
+const QUERY_PARAM_YEAR = 'year';
+const QUERY_PARAM_POINT = 'pointThreshold';
+
 const app = new Vue({
   el: '#app',
   data:  {
@@ -28,12 +33,24 @@ const app = new Vue({
         '2017',
         '2018'
       ],
-      selected: '2012'
+      selected: DEFAULT_YEAR
     },
-    points: '30'
+    pointThresholds: {
+      options: [
+        '30',
+        '50',
+        '80',
+        '130',
+        '210',
+        '340',
+        '550',
+        '890',
+      ],
+      selected: DEFAULT_POINT_THRESHOLD
+    },
   },
   created () {
-    fetch('http://localhost:3000/story')
+    fetch(`http://localhost:3000/story?${QUERY_PARAM_YEAR}=${DEFAULT_YEAR}&${QUERY_PARAM_POINT}=${DEFAULT_POINT_THRESHOLD}`)
       .then(response => response.json())
       .then(json => {
         this.posts = json;
@@ -44,7 +61,7 @@ const app = new Vue({
       const vm = this;
       const qsObj = {
         year: vm.beforeYears.selected,
-        points: vm.points
+        pointThreshold: vm.pointThresholds.selected
       }
       const qs = Object.keys(qsObj).reduce((acc, key) => {
         acc.push(`${key}=${qsObj[key]}`);

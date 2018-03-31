@@ -6,7 +6,9 @@ const queryAPI = require('./query');
 const curl = require('curlrequest');
 const extractor = require('unfluff');
 
-function extractArticle(article) {
+const RESPONSE_TIMEOUT = 5000;
+
+function extractArticle(article, cb) {
   return new Promise((resolve, reject) => {
     curl.request({
       url: article.url,
@@ -20,26 +22,26 @@ function extractArticle(article) {
         reject(error || 'nothing found');
       }
     })
-  }).catch(e => console.log(e));
+  })
+  .then(parsed => {
+    article.content = (parsed.text).replace('{', '');
+    cb(article);
+  })
+  .catch(e => {});
 }
 
 app.get('/story', (req, res, next) => {
     queryAPI(req.query)
       .then(results => {
-        res.json(results);
-        console.log(results instanceof Array);
-        const articlePromises = results.map(extractArticle);
-        return Promise.all(articlePromises);
-      })
-      .then(articles => {
-        articles.forEach(a => {
-          if (a) {
-            console.log(a);
-/*             a = JSON.parse(a); */
-            fs.writeFileSync(`${a.title}.txt`, a.text, e => {
-              console.log(e);
-            })
-          }
+        setTimeout(() => {
+          res.json(articlesToSend);
+        }, RESPONSE_TIMEOUT);
+
+        const articlesToSend = [];
+        results.forEach(function(result) {
+          extractArticle(result, function(article) {
+            articlesToSend.push(article);
+          });
         })
       })
       .catch(e => {

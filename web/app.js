@@ -1,3 +1,6 @@
+const swStarter = require('./sw-starter');
+const sendMessage = require('./messenger');
+
 Vue.filter('formatUnixTime', (unixTime) => {
   const time = new Date(parseInt(unixTime) * 1000);
   const year = time.getFullYear();
@@ -50,11 +53,19 @@ const app = new Vue({
     },
   },
   created () {
+    swStarter();
     fetch(`http://localhost:3000/story?${QUERY_PARAM_YEAR}=${DEFAULT_YEAR}&${QUERY_PARAM_POINT}=${DEFAULT_POINT_THRESHOLD}`)
       .then(response => response.json())
       .then(json => {
         this.posts = json;
+        window.posts = this.posts;
+        setTimeout(function() {
+          sendMessage(JSON.stringify(window.posts));
+        }, 2000);
       });
+  },
+  mounted () {
+    console.log('mounted document.readyState', document.readyState);
   },
   methods: {
     handleQueryPreference(e) {
@@ -71,6 +82,7 @@ const app = new Vue({
         .then(response => response.json())
         .then(json => {
           this.posts = json;
+          window.posts = this.posts;
         });
     }
   }

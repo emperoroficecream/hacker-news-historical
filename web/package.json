@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd public && browserify app.js -o bundle.js",
+    "build": "browserify app.js -o ./public/bundle.js && workbox injectManifest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kat Zhang <arcadychang@gmail.com>",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "workbox-cli": "^3.0.1"
+  },
   "devDependencies": {
     "browserify": "^16.1.1"
   }

@@ -10,9 +10,11 @@
   "author": "Kat Zhang <arcadychang@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "vue": "^2.5.16",
     "workbox-cli": "^3.0.1"
   },
   "devDependencies": {
-    "browserify": "^16.1.1"
+    "browserify": "^16.1.1",
+    "vueify": "^9.4.1"
   }
 }

@@ -25,7 +25,7 @@ function routeHandler(context) {
       'Content-Type': 'text/html'
     }
   };
-  const post = self.posts.find(p => p.id == postId);
+  const post = self.posts.find(p => p.id === postId);
   return new Response(post.content, resOpts);
 }
 

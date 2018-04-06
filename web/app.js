@@ -12,78 +12,34 @@ Vue.filter('formatUnixTime', (unixTime) => {
   return `${year}-${month}-${date}, ${hour}:${minute}:${second}`;
 })
 
-const DEFAULT_YEAR = '2012';
-const DEFAULT_POINT_THRESHOLD = '130';
 const QUERY_PARAM_YEAR = 'year';
 const QUERY_PARAM_POINT = 'pointThreshold';
+const DEFAULT_YEAR = '2012';
+const DEFAULT_POINT_THRESHOLD = '130';
+
+const routes = [
+  { path: '/foo', component: { template: '<div>Foo</div>' } }
+];
+
+const App = require('./views/AppView.vue');
+const PostView = require('./views/PostView.vue');
+
+const router = new VueRouter({ 
+  routes: [
+    { path: '/post/:id', component: PostView }
+  ]
+ });
+
 
 const app = new Vue({
   el: '#app',
-  data:  {
-    posts: [],
-    beforeYears: {
-      options: [
-        '2007',
-        '2008',
-        '2009',
-        '2010',
-        '2011',
-        '2012',
-        '2013',
-        '2014',
-        '2015',
-        '2016',
-        '2017',
-        '2018'
-      ],
-      selected: DEFAULT_YEAR
-    },
-    pointThresholds: {
-      options: [
-        '30',
-        '50',
-        '80',
-        '130',
-        '210',
-        '340',
-        '550',
-        '890',
-      ],
-      selected: DEFAULT_POINT_THRESHOLD
-    },
-  },
+  router, 
+  render: h => h(App),
   created () {
+    console.log('created document.readyState', document.readyState);
     swStarter();
-    fetch(`http://localhost:3000/story?${QUERY_PARAM_YEAR}=${DEFAULT_YEAR}&${QUERY_PARAM_POINT}=${DEFAULT_POINT_THRESHOLD}`)
-      .then(response => response.json())
-      .then(json => {
-        this.posts = json;
-        window.posts = this.posts;
-        setTimeout(function() {
-          sendMessage(JSON.stringify(window.posts));
-        }, 2000);
-      });
   },
   mounted () {
     console.log('mounted document.readyState', document.readyState);
-  },
-  methods: {
-    handleQueryPreference(e) {
-      const vm = this;
-      const qsObj = {
-        year: vm.beforeYears.selected,
-        pointThreshold: vm.pointThresholds.selected
-      }
-      const qs = Object.keys(qsObj).reduce((acc, key) => {
-        acc.push(`${key}=${qsObj[key]}`);
-        return acc;
-      }, []).join('&');
-      fetch('http://localhost:3000/story?' + qs)
-        .then(response => response.json())
-        .then(json => {
-          this.posts = json;
-          window.posts = this.posts;
-        });
-    }
   }
 })

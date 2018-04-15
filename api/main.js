@@ -30,6 +30,11 @@ function extractArticle(article, cb) {
   .catch(e => {});
 }
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.get('/story', (req, res, next) => {
     queryAPI(req.query)
       .then(results => {
@@ -48,6 +53,7 @@ app.get('/story', (req, res, next) => {
         console.log(e);
       });
 });
+
 
 app.use(express.static(path.join(__dirname, '..', 'web', 'public')));
 

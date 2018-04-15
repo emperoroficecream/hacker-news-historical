@@ -17,15 +17,20 @@ const bigQuery = new BigQuery({
 });
 
 function getSQLQuery(queryParams) {
-  const beforeYear = queryParams.year;
-  const pointThreshold = queryParams.pointThreshold;
+  const startYear = queryParams.startYear;
+  const startMonth = queryParams.startMonth;
+  const endYear = queryParams.endYear;
+  const endMonth = queryParams.endMonth;
+  const minPoints = queryParams.minPoints;
   // Time field is in seconds
-  const beforeTimestamp = Math.floor(Date.UTC(beforeYear, 1, 1, 0, 0, 0) / 1000);
+  const fromTimestamp = Math.floor(Date.UTC(startYear, startMonth, 1, 0, 0, 0) / 1000);
+  const toTimestamp = Math.floor(Date.UTC(endYear, endMonth, 1, 0, 0, 0) / 1000);
   const sqlQuery = `
     SELECT *
     FROM \`bigquery-public-data.hacker_news.stories\`
-    WHERE score > ${pointThreshold}
-    AND time < ${beforeTimestamp}
+    WHERE score > ${minPoints}
+    AND time > ${fromTimestamp}
+    AND time < ${toTimestamp}
     ORDER BY time DESC
     LIMIT 100
     `;

@@ -1,14 +1,22 @@
 <template>
   <div class="home">
+    <div class="section">
+      <div class="hero is-primary">
+        <div class="hero-body">
+          <h1 class="title">HN Offline</h1>
+          <h2 class="subtitle">Hacker News you can read anywhere, anytime</h2>
+        </div>
+      </div>
+    </div>
     <PostFilter/>
-    <Posts/>
+    <PostList/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import PostFilter from '@/components/PostFilter.vue'
-import Posts from '@/components/Posts.vue'
+import PostList from '@/components/PostList.vue'
 import { store } from '@/store'
 
 export default {
@@ -20,7 +28,18 @@ export default {
   },
   components: {
     PostFilter,
-    Posts
+    PostList
   }
 }
 </script>
+<style>
+.subtitle {
+  text-align: left;
+}
+
+.hero, .hero-body, .section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+</style>
+

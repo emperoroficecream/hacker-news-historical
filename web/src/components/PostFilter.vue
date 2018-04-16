@@ -91,6 +91,7 @@ export default {
       .then(response => response.json())
       .then((json) => {
         vm.sharedState.posts = json;
+        console.log(vm.sharedState.posts);
       });
   }  
   },
@@ -114,7 +115,6 @@ export default {
     }
   },
   created () {
-    console.log('created');
     this.handleQueryPreference();
   }
 }

@@ -4,7 +4,7 @@
           <li v-for="post in posts" v-bind:key="post.id" class="hero">
             <div class="hero-body">
                 <h4 class="title is-4">
-                  <a v-bind:href="'./post/' + post.id">{{ post.title }}</a>
+                  <router-link v-bind:to="'./post/' + post.id">{{ post.title }}</router-link>
                 </h4>
                 <div class="tags has-addons">
                     <span class="tag is-primary">points: {{ post.score }}</span>

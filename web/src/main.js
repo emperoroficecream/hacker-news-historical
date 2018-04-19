@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import './registerServiceWorker'
 import { store } from './store'
+import { registerServiceWorker } from './registerServiceWorker'
 
 Vue.config.productionTip = false
 
@@ -13,3 +13,5 @@ new Vue({
     sharedState: store.state
   }
 }).$mount('#app')
+
+registerServiceWorker();

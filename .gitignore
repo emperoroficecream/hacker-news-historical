@@ -1,8 +1,8 @@
 web/dist/
-/api/*.txt
-/api/node_modules/
+/api/public/
+/api/functions/node_modules/
+/api/functions/gcp-config.json
 /web/node_modules/
 /node_modules/
-gcp-config.json
 .DS_Store
 /web/public/bundle.js

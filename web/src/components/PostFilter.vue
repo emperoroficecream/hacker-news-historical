@@ -87,13 +87,13 @@ export default {
       acc.push(`${key}=${qsObj[key]}`);
       return acc;
     }, []).join('&');
-    fetch('http://localhost:3000/story?' + qs)
+    fetch('/story?' + qs)
       .then(response => response.json())
       .then((json) => {
         vm.sharedState.posts = json;
         console.log(vm.sharedState.posts);
       });
-  }  
+    }  
   },
   data () {
     const years = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018'];
@@ -113,9 +113,6 @@ export default {
       minPoints: DEFAULT_MIN_POINTS,
       sharedState: store.state
     }
-  },
-  created () {
-    this.handleQueryPreference();
   }
 }
 </script>

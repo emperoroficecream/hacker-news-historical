@@ -1,4 +1,4 @@
-# hacker-news-historical
+# HN Historical
 
 Read any hacker news article from any time - optionally with a filter for points.
 
